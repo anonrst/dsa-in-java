@@ -2,23 +2,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
  class  Solution {
-    static public int find_inversionCOunts(int[] nums){
-        int count = 0;
-        for(int i= nums.length - 1; i >= 0;i--){
-            for(int j= 0;j < i;j++){
-                if(nums[j] > nums[i]){
-                    count++;
-                }
-            }
+    static public int[] findMissingAndRepeatingNumber(int[] nums){
+        long n = nums.length;
+        long resultSumAB = 0;
+        long resultSQSumAB = 0;
+        for(int x: nums){
+            resultSumAB += (long)x;
+            resultSQSumAB += (long)x*x;
         }
-        return count;
+        long expectedSumAB = n * (n + 1)/ 2;
+        long expectedSQSumAB = (n * (n + 1) * (2 * n + 1)) / 6;
+
+        long ABminus = resultSumAB - expectedSumAB;
+        long ABPlus = (resultSQSumAB - expectedSQSumAB) / ABminus;
+        long A = (ABPlus + ABminus )/ 2;
+        long B = A - ABminus;
+        System.err.println((int)A);
+        return new int[]{(int)A, (int)B};
     }
 }
 public class find_the_repeating_and_missing_number {
     public static void main(String[] args) {
-        int[] testcase = {4,3,2,1};
-        int expected  =6;
-        int result = Solution.find_inversionCOunts(testcase);
+        int[] testcase = {1,2,3,4,6,6};
+        int[] expected  ={6,5};
+        int[] result = Solution.findMissingAndRepeatingNumber(testcase);
         System.out.println(result == expected);
     }
 }
